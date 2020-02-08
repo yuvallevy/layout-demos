@@ -1,3 +1,5 @@
+/* !important is used to forcefully override CSS rules that would normally take precedence.
+   This is often considered bad practice (!importants can conflict as well), so use sparingly. */
 * {
   border-radius: 0 !important;
 }
@@ -59,7 +61,9 @@ a:hover, .btn-link:hover {
   border-color: #219a21;
   color: #111;
 }
-.btn-primary:active, .btn-primary:hover:active {
+.btn-primary:not(:disabled):not(.disabled):active,
+.btn-primary:not(:disabled):not(.disabled):hover:active,
+.btn-primary:not(:disabled):not(.disabled):active:focus {
   background-color: #188118;
   border-color: #188118;
   color: #111;
