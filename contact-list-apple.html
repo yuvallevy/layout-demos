@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-size: 12pt;
+        margin: 0;
+        overflow: hidden;  /* We don't want any scrollbars on the body in this case;
+                              each section should be separately scrollable */
+      }
+      
+      #contacts {  /* Contains #sidebar and #details */
+        display: flex;
+        height: 100vh;
+      }
+      
+      /* First child of #contacts; defined with fixed width
+         Why not width? - #contacts is a flex container, and width does not always play well with flex elements.
+         flex-basis is usually used for specifying fixed sizes instead. */
+      #sidebar {
+        flex-basis: 250px;
+        border-right: 1px solid lightgray;
+        overflow: auto;
+      }
+      #search-box-container {
+        background-color: gainsboro;
+        padding: 0.5em;
+        display: flex;
+        align-items: stretch;
+      }
+      #search-box-container .search-box {
+        background-color: white;
+        border: none;
+        border-radius: 4px;
+        font: inherit;
+        font-size: 90%;
+        padding: 8px 10px;
+        flex-grow: 1;
+      }
+      #add-contact {
+        border: none;
+        background-color: transparent;
+        color: #1080ff;
+        font-size: 130%;
+        padding-left: 8px;
+        padding-right: 4px;
+        padding-bottom: 5px;  /* Minor hack to center the icon vertically - use only as a last resort! */
+      }
+      #add-contact:focus {
+        outline: none;
+      }
+      .letter {
+        padding: 0.2em 0.8em;
+        background: whitesmoke;
+        font-weight: bold;
+      }
+      .contact-list-entry {
+        padding: 0.6em 0.9em;
+        overflow-x: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .contact-list-entry.selected {
+        background-color: gainsboro;
+      }
+      .contact-list-entry > .last-name {
+        font-weight: bold;
+      }
+      
+      /* Second child of #contacts; defined to fill the rest of the screen
+         flex-grow: 1 in this context means "grow as much as possible" */
+      #details {
+        flex-grow: 1;
+        overflow: auto;
+      }
+      #details > * {
+        margin-left: 12px;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        padding-right: 12px;
+      }
+      #name {
+        font-weight: bold;
+        font-size: 105%;
+      }
+      .detail {
+        border-bottom: 1px solid lightgray;
+      }
+      .detail-title, #share-link {
+        color: #2080ff;
+      }
+      .detail-title {
+        font-size: 85%;
+        margin-bottom: 2px;
+      }
+      #share-link {
+        display: block;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="contacts">
+      <section id="sidebar">
+        <div id="search-box-container">
+          <input type="text" class="search-box" placeholder="Search contacts..." />
+          <button id="add-contact">+</button>
+        </div>
+        <div class="contact-list">
+          <div class="letter">B</div>
+          <div class="contact-list-entry">T&oacute;bias <span class="last-name">Bolger</span></div>
+          <div class="contact-list-entry">Cerdic <span class="last-name">Bunce</span></div>
+          <div class="contact-list-entry">Maxima <span class="last-name">Bunce</span></div>
+          <div class="contact-list-entry">Amanda <span class="last-name">Burrows</span></div>
+          <div class="letter">G</div>
+          <div class="contact-list-entry">Toby <span class="last-name">Greenhand</span></div>
+          <div class="contact-list-entry">Fortinbras <span class="last-name">Grubb</span></div>
+          <div class="letter">H</div>
+          <div class="contact-list-entry">Herugar <span class="last-name">Hayward</span></div>
+          <div class="contact-list-entry">Hugo <span class="last-name">Hayward</span></div>
+          <div class="contact-list-entry">Camelia <span class="last-name">Hornblower</span></div>
+          <div class="contact-list-entry selected">Jago <span class="last-name">Hornblower</span></div>
+          <div class="letter">N</div>
+          <div class="contact-list-entry">Nina <span class="last-name">Noakes</span></div>
+          <div class="letter">S</div>
+          <div class="contact-list-entry">Jemima <span class="last-name">Sackville</span></div>
+          <div class="contact-list-entry">Eglantine <span class="last-name">Sandheaver</span></div>
+          <div class="contact-list-entry">Will <span class="last-name">Sandyman</span></div>
+          <div class="letter">U</div>
+          <div class="contact-list-entry">Malva <span class="last-name">Underhill</span></div>
+          <div class="letter">W</div>
+          <div class="contact-list-entry">Laura <span class="last-name">Whitfoot</span></div>
+          <div class="contact-list-entry">Pamphila <span class="last-name">Whitfoot</span></div>
+          <div class="letter">Z</div>
+          <div class="contact-list-entry">Polo <span class="last-name">Zaragamba</span></div>
+        </div>
+      </section>
+      <section id="details">
+        <div id="name">
+          Jago Hornblower
+        </div>
+        <div class="detail">
+          <div class="detail-title">Mobile</div>
+          (021) 1583-013
+        </div>
+        <div class="detail">
+          <div class="detail-title">Email</div>
+          JagoHornblower@dayrep.com
+        </div>
+        <div class="detail">
+          <div class="detail-title">Ringtone</div>
+          Waves
+        </div>
+        <div class="detail">
+          <div class="detail-title">Address</div>
+          137 Duppa Street<br />
+          Southgate<br />
+          Wellington 6023
+        </div>
+        <div class="detail">
+          <div class="detail-title">Birthday</div>
+          June 17, 1953
+        </div>
+        <a href="#" id="share-link">
+          Share contact
+        </a>
+      </section>
+    </div>
+  </body>
+</html>

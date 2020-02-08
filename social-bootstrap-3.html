@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="css/bootstrap-3.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link id="theme-css" rel="stylesheet" href="">
+    <style>
+      body {
+        /* Apply padding to body to make room for the navbar */
+        padding-top: 70px;
+      }
+      
+      /* I don't like these pesky underline fragments next to my icons,
+         so I'm making all link buttons underline-free, even on hover or focus.
+         This is a personal design choice; don't feel obliged to do the same. */
+      .btn-link {
+        text-decoration: none !important;
+      }
+      
+      .new-post-textarea {
+        margin-bottom: 0.5em;
+      }
+      
+      .post-author {
+        font-size: 110%;
+        font-weight: bold;
+      }
+      .post-time {
+        font-size: 90%;
+        margin-bottom: 0.5em;
+      }
+      .post-comments {
+        margin-top: 0.75em;
+      }
+      .post-likes {
+        margin-top: 0.3em;
+        font-size: 90%;
+      }
+      .post-reactions {
+        margin-top: 0.5em;
+      }
+      .post-options {
+        display: none;
+      }
+      .post:hover .post-options {
+        display: block;
+      }
+      
+      .comment {
+        margin-bottom: 4px;
+      }
+      .comment-author {
+        font-weight: bold;
+      }
+      .comment:last-child {
+        margin-bottom: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">VisageAlbum</a>
+        </div>
+        <div class="navbar-right">
+          <form class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">Search</button>
+          </form>
+          <button type="button" class="btn btn-link navbar-btn">
+            <span class="fa fa-users"></span>&nbsp;
+          </button>
+          <button type="button" class="btn btn-link navbar-btn">
+            <span class="fa fa-comments"></span>&nbsp;
+          </button>
+          <button type="button" class="btn btn-link navbar-btn">
+            <span class="fa fa-bell"></span> 3
+          </button>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-3">
+          <div><span class="fa fa-fw fa-user"></span> <a href="#">Your profile</a></div>
+          <div><span class="fa fa-fw fa-users"></span> <a href="#">Friends</a></div>
+          <div><span class="fa fa-fw fa-calendar"></span> <a href="#">Events</a></div>
+          <div><span class="fa fa-fw fa-flag"></span> <a href="#">Pages</a></div>
+          <div><span class="fa fa-fw fa-history"></span> <a href="#">Memories</a></div>
+          <div><span class="fa fa-fw fa-bookmark"></span> <a href="#">Saved</a></div>
+          <div><button type="button" class="btn btn-default btn-block" onClick="toggleTheme()">Toggle Theme</button></div>
+        </div>
+        <div class="col-sm-9">
+        <div class="new-post">
+          <textarea class="form-control new-post-textarea" placeholder="What's on your mind?"></textarea>
+          <div class="text-right">
+            <button class="btn btn-link"><span class="fa fa-image"></span> Add Photo/Video</button>
+            <button class="btn btn-link"><span class="fa fa-map-marker"></span> Add Location</button>
+            <button class="btn btn-primary">Post</button>
+          </div>
+        </div>
+        <hr />
+        <div class="panel panel-default post">
+          <div class="panel-body">
+            <div class="pull-right post-options">
+              <a class="text-muted" href="#"><span class="fa fa-fw fa-bookmark"></span></a>
+              <a class="text-muted" href="#"><span class="fa fa-fw fa-ban"></span></a>
+            </div>
+            <div class="post-author"><a href="#">David Bowman</a></div>
+            <div class="text-muted post-time">24 min</div>
+            <div class="post-content">
+              Open the pod bay door, <a href="#">HAL 9000</a>
+            </div>
+            <div class="post-likes">
+              <span class="fa fa-thumbs-up"></span> <a href="#">Frank Poole</a> likes this.
+            </div>
+            <div class="btn-group post-reactions">
+              <button class="btn btn-default">
+                <span class="fa fa-thumbs-up"></span>
+                Like
+              </button>
+              <button class="btn btn-default">
+                <span class="fa fa-comment"></span>
+                1 Comment
+              </button>
+              <button class="btn btn-default">
+                <span class="fa fa-share"></span>
+                Share
+              </button>
+            </div>
+            <div class="well well-sm post-comments">
+              <div class="comment">
+                <a class="comment-author" href="#">HAL 9000</a>
+                I'm sorry, Dave. I'm afraid I cannot do that.
+                <div class="text-muted">
+                  22 min &middot;
+                  <a class="text-muted" href="#">Like</a> &middot;
+                  <a class="text-muted" href="#">Reply</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="panel panel-default post">
+          <div class="panel-body">
+            <div class="pull-right post-options">
+              <a class="text-muted" href="#"><span class="fa fa-fw fa-bookmark"></span></a>
+              <a class="text-muted" href="#"><span class="fa fa-fw fa-ban"></span></a>
+            </div>
+            <div class="post-author"><a href="#">Betty J. Storer</a></div>
+            <div class="text-muted post-time">35 min</div>
+            <div class="post-content">
+              Relationship starts with TRUST :-)
+            </div>
+            <div class="btn-group post-reactions">
+              <button class="btn btn-default">
+                <span class="fa fa-thumbs-up"></span>
+                Like
+              </button>
+              <button class="btn btn-default">
+                <span class="fa fa-comment"></span>
+                1 Comment
+              </button>
+              <button class="btn btn-default">
+                <span class="fa fa-share"></span>
+                Share
+              </button>
+            </div>
+            <div class="well well-sm post-comments">
+              <div class="comment">
+                <a class="comment-author" href="#">Michael E. Clark</a>
+                No it doesn't, it starts with R
+                <div class="text-muted">
+                  28 min &middot;
+                  <a class="text-muted" href="#">Unlike</a> &middot;
+                  <a class="text-muted" href="#">Reply</a> &middot;
+                  <span class="fa fa-thumbs-up"></span> 49
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="panel panel-default post">
+          <div class="panel-body">
+            <div class="pull-right post-options">
+              <a class="text-muted" href="#"><span class="fa fa-fw fa-bookmark"></span></a>
+              <a class="text-muted" href="#"><span class="fa fa-fw fa-ban"></span></a>
+            </div>
+            <div class="post-author">
+              <a href="#">Winston Smith</a>
+              <span class="fa fa-fw fa-caret-right"></span>
+              <a href="#">1984</a>
+            </div>
+            <div class="text-muted post-time">2 h</div>
+            <div class="post-content">
+              Does Big Brother exist?
+            </div>
+            <div class="btn-group post-reactions">
+              <button class="btn btn-default">
+                <span class="fa fa-thumbs-up"></span>
+                Like
+              </button>
+              <button class="btn btn-default">
+                <span class="fa fa-comment"></span>
+                3 Comments
+              </button>
+              <button class="btn btn-default">
+                <span class="fa fa-share"></span>
+                Share
+              </button>
+            </div>
+            <div class="well well-sm post-comments">
+              <div class="comment">
+                <a class="comment-author" href="#">O'Brien</a>
+                Of course he exists. The Party exists.
+                Big Brother is the embodiment of the Party
+                <div class="text-muted">
+                  2 h &middot;
+                  <a class="text-muted" href="#">Like</a> &middot;
+                  <a class="text-muted" href="#">Reply</a>
+                </div>
+              </div>
+              <div class="comment">
+                <a class="comment-author" href="#">Winston Smith</a>
+                Does he exist in the same way as I exist?
+                <div class="text-muted">
+                  2 h &middot;
+                  <a class="text-muted" href="#">Like</a> &middot;
+                  <a class="text-muted" href="#">Reply</a>
+                </div>
+              </div>
+              <div class="comment">
+                <a class="comment-author" href="#">O'Brien</a>
+                You do not exist
+                <div class="text-muted">
+                  2 h &middot;
+                  <a class="text-muted" href="#">Like</a> &middot;
+                  <a class="text-muted" href="#">Reply</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+    
+    <script>
+      const CSS_PATH = 'css/social-bootstrap-3-theme.css';
+      function toggleTheme() {
+        const linkElement = document.getElementById('theme-css');
+        if (linkElement.attributes['href'].value === CSS_PATH) {
+          linkElement.setAttribute('href', '');
+        } else {
+          linkElement.setAttribute('href', CSS_PATH);
+        }
+      }
+    </script>
+  </body>
+</html>

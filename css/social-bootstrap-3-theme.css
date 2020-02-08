@@ -1,0 +1,80 @@
+* {
+  border-radius: 0 !important;
+}
+*:focus {
+  outline: none !important;
+}
+body {
+  font-family: "Segoe UI", "Lucida Grande", sans-serif;
+  background-color: #111;
+  color: limegreen;
+}
+a, .btn-link, a:focus, .btn-link:focus {
+  color: #71e471;
+}
+a:hover, .btn-link:hover {
+  color: #20c320;
+}
+.btn-default, .btn-default:focus, .btn-default:active:focus {
+  background-color: #111;
+  border-color: #333;
+  color: inherit;
+}
+.btn-default:hover {
+  background-color: #181818;
+  border-color: #393939;
+  color: inherit;
+}
+.btn-default:active, .btn-default:hover:active {
+  background-color: #212121;
+  border-color: #3d3d3d;
+  color: inherit;
+}
+.btn-primary, .btn-primary:focus, .btn-primary:active:focus {
+  background-color: #32b932;
+  border-color: #32b932;
+  color: #111;
+  font-weight: bold;
+}
+.btn-primary:hover {
+  background-color: #219a21;
+  border-color: #219a21;
+  color: #111;
+}
+.btn-primary:active, .btn-primary:hover:active {
+  background-color: #188118;
+  border-color: #188118;
+  color: #111;
+}
+.form-control {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid limegreen;
+  color: inherit;
+}
+.form-control:focus {
+  background-color: #181818;
+  border: inherit;
+  border-bottom: 1px solid limegreen;
+  color: inherit;
+  box-shadow: none;
+}
+.navbar-default {
+  background-color: #181818;
+  border-bottom-color: #212121;
+}
+.navbar-default .btn-link:hover, .navbar-default .btn-link:focus {
+  color: inherit;
+  text-decoration: none;
+}
+.panel {
+  background-color: #181818;
+  border-color: #212121;
+}
+.well {
+  background-color: #151515;
+  border-color: #212121;
+}
+hr {
+  border-color: inherit;
+}

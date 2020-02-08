@@ -1,0 +1,98 @@
+* {
+  border-radius: 0 !important;
+}
+*:focus {
+  outline: none !important;
+}
+body {
+  font-family: "Segoe UI", "Lucida Grande", sans-serif;
+  background-color: #111;
+  color: limegreen;
+}
+a, .btn-link, a:focus, .btn-link:focus {
+  color: #71e471;
+}
+a:hover, .btn-link:hover {
+  color: #20c320;
+}
+.btn-light, .btn-light:focus, .btn-light:active:focus {
+  background-color: #222;
+  border-color: #222;
+  color: inherit;
+}
+.btn-light:hover {
+  background-color: #292929;
+  border-color: #292929;
+  color: inherit;
+}
+.btn-light:active, .btn-light:hover:active, .btn-light:hover:active:focus {
+  background-color: #272727;
+  border-color: #272727;
+  color: inherit;
+}
+.btn-secondary, .btn-secondary:focus, .btn-secondary:active:focus {
+  background-color: #151515;
+  border-color: #151515;
+  color: inherit;
+}
+.btn-secondary:hover {
+  background-color: #292929;
+  border-color: #292929;
+  color: inherit;
+}
+.btn-secondary:active, .btn-secondary:hover:active, .btn-secondary:hover:active:focus {
+  background-color: #272727;
+  border-color: #272727;
+  color: inherit;
+}
+.btn-primary, .btn-primary:focus, .btn-primary:active:focus {
+  background-color: #32b932;
+  border-color: #32b932;
+  color: #111;
+  font-weight: bold;
+}
+.btn-primary:hover {
+  background-color: #219a21;
+  border-color: #219a21;
+  color: #111;
+}
+.btn-primary:active, .btn-primary:hover:active {
+  background-color: #188118;
+  border-color: #188118;
+  color: #111;
+}
+.form-control {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid limegreen;
+  color: inherit;
+}
+.form-control:focus {
+  background-color: #181818;
+  border: inherit;
+  border-bottom: 1px solid limegreen;
+  color: inherit;
+  box-shadow: none;
+}
+.navbar-light.bg-light {
+  background-color: #212121 !important;
+  border-bottom-color: #212121;
+}
+.navbar-light.bg-light .navbar-brand {
+  color: inherit;
+}
+.navbar-light.bg-light .btn-link:hover, .navbar-light.bg-light .btn-link:focus {
+  color: inherit;
+  text-decoration: none;
+}
+.card {
+  background-color: #151515;
+  border: none;
+}
+.card.bg-light .card-body {
+  background-color: #181818;
+  border: none;
+}
+hr {
+  border-color: inherit;
+}

@@ -1,0 +1,132 @@
+<html>
+  <head>
+    <style>
+      /* Do not wrap words in code snippets */
+      code {
+        white-space: nowrap;
+      }
+      
+      .box-model-demo {
+        display: flex;
+        height: 6em;
+      }
+      .box-model-demo > div {
+        flex: 1;
+      }
+      
+      .no-border {
+        border: none;
+      }
+      .thin-border {
+        border: 1px dashed rosybrown;
+      }
+      .thick-border {
+        border: 6px solid cornflowerblue;
+      }
+      
+      .box-model-demo.margin > div {
+        border: 1px solid mediumseagreen;
+      }
+      .no-margins {
+        margin: 0;
+      }
+      .narrow-margins {
+        margin: 2px;
+      }
+      .wide-margins {
+        margin: 12px;
+      }
+      
+      .box-model-demo.padding > div {
+        border: 1px solid hotpink;
+      }
+      .no-padding {
+        padding: 0;
+      }
+      .narrow-padding {
+        padding: 4px;
+      }
+      .wide-padding {
+        padding: 18px;
+      }
+      
+      .everything {
+        border: 1px solid darkgoldenrod;
+        margin: 18px;
+        padding: 12px;
+      }
+      
+      .varied-everything {
+        border-left: 6px solid slateblue;
+        border-right: 1px solid lightslategray;
+        padding-left: 24px;
+        padding-top: 4px;
+        margin-left: 24px;
+        margin-right: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Box model basics</h2>
+    
+    <h4>Border</h4>
+    <div class="box-model-demo border">
+      <div class="no-border">
+        <code>border: none;</code>
+      </div>
+      <div class="thin-border">
+        <code>border: 1px dashed rosybrown;</code><br />
+      </div>
+      <div class="thick-border">
+        <code>border: 6px solid cornflowerblue;</code>
+      </div>
+    </div>
+    
+    <h4>Margin &ndash; spacing outside element</h4>
+    <div class="box-model-demo margin">
+      <div class="no-margins">
+        <code>margin: 0;</code>
+      </div>
+      <div class="narrow-margins">
+        <code>margin: 2px;</code>
+      </div>
+      <div class="wide-margins">
+        <code>margin: 12px;</code>
+      </div>
+    </div>
+    
+    <h4>Padding &ndash; spacing within element</h4>
+    <div class="box-model-demo padding">
+      <div class="no-padding">
+        <code>padding: 0;</code>
+      </div>
+      <div class="narrow-padding">
+        <code>padding: 4px;</code>
+      </div>
+      <div class="wide-padding">
+        <code>padding: 18px;</code>
+      </div>
+    </div>
+    
+    <h4>Putting it together</h4>
+    <div class="box-model-demo everything">
+      <code>
+        border: 1px solid darkgoldenrod;<br />
+        margin: 18px;<br />
+        padding: 12px;
+      </code>
+    </div>
+    
+    <h4>Setting individual sides</h4>
+    <div class="box-model-demo varied-everything">
+      <code>
+        border-left: 6px solid slateblue;<br />
+        border-right: 1px solid lightslategray;<br />
+        padding-left: 24px;<br />
+        padding-top: 4px;<br />
+        margin-left: 24px;<br />
+        margin-right: 18px;
+      </code>
+    </div>
+  </body>
+</html>
