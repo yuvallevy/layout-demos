@@ -15,6 +15,9 @@ a, .btn-link, a:focus, .btn-link:focus {
 a:hover, .btn-link:hover {
   color: #20c320;
 }
+.btn:focus, btn:active:focus {
+  box-shadow: none !important;
+}
 .btn-light, .btn-light:focus, .btn-light:active:focus {
   background-color: #222;
   border-color: #222;
