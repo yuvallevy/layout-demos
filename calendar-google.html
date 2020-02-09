@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      /* Import Roboto font - key to the Google look! */
+      @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 400;
+        src: url(../fonts/Roboto-Regular.ttf) format('truetype');
+      }
+      @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 500;
+        src: url(../fonts/Roboto-Medium.ttf) format('truetype');
+      }
+      @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 700;
+        src: url(../fonts/Roboto-Bold.ttf) format('truetype');
+      }
+      @font-face {
+        font-family: 'Material Icons';
+        font-style: normal;
+        font-weight: 400;
+        src: url(../fonts/MaterialIcons-Regular.woff2) format('woff2');
+      }
+      
+      * {
+        font-family: Roboto, sans-serif;
+        font-size: inherit;
+        box-sizing: border-box;
+        line-height: 1.25;
+      }
+      
+      body {
+        margin: 0;
+        color: #616161;
+        display: grid;
+        grid-template-columns: 256px 1fr;  /* fr = remaining free space */
+        grid-template-rows: 64px 1fr;
+        /* Watch this - I can give grid areas names: */
+        grid-template-areas:
+          "topbar topbar"
+          "sidebar main";
+        overflow: hidden;
+        height: 100vh;
+      }
+      .demo-note {
+        font-size: 80%;
+        padding: 0 2em;
+      }
+      .demo-note > p {
+        line-height: 1.5;
+      }
+      
+      .icon {
+        font-family: "Material Icons";
+        font-size: 24px;
+        color: #5f6368;
+      }
+      .ellipsis {
+        white-space: nowrap;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+      }
+      
+      button {
+        height: 36px;
+        line-height: 1;
+        min-width: 36px;
+        font-weight: 500;
+        color: #3c4043;
+        border: none;
+        border-radius: 4px;
+        outline: none !important;
+        cursor: pointer;
+        padding: 7px 12px 5px 12px;
+        background-color: transparent;
+      }
+      button:hover {
+        background-color: #f6f6f6;
+      }
+      button:active {
+        background-color: #eaeaea;
+      }
+      button.outline, select {
+        border-radius: 4px;
+        border: 1px solid #dadce0;
+      }
+      button.outline:hover, select:hover:not(:focus) {
+        background-color: #f1f3f4;
+      }
+      button.outline:active, select:active:not(:focus) {
+        background-color: #d3d4d6;
+      }
+      button.large {
+        height: 48px;
+        min-width: 48px;
+      }
+      button.small {
+        height: 32px;
+        min-width: 32px;
+      }
+      button.tiny {
+        height: 24px;
+        min-width: 24px;
+      }
+      button.icon {
+        border-radius: 50%;
+        padding: 0;
+      }
+      button.small.icon {
+        width: 28px;
+      }
+      button.tiny.icon {
+        width: 24px;
+      }
+      button.floating {
+        position: fixed;
+        width: 56px;
+        height: 56px;
+        bottom: 24px;
+        right: 32px;
+      }
+      button.accent {
+        background-color: #d32f2f;
+        color: white;
+        box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0,0,0,.12);
+        transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1),opacity 15ms linear 30ms,transform 270ms 0ms cubic-bezier(0, 0, 0.2, 1)
+      }
+      button.accent:hover {
+        background-color: #c62828;
+        box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0,0,0,.12);
+      }
+      button.accent:active {
+        background-color: #ef9a9a;
+        box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 12px 17px 2px rgba(0, 0, 0, 0.14), 0px 5px 22px 4px rgba(0,0,0,.12);
+      }
+      select {
+        cursor: pointer;
+        padding-left: 8px;
+      }
+      input[type=text] {
+        border: none;
+        border-radius: 4px;
+        height: 36px;
+        padding-left: 12px;
+        padding-right: 12px;
+        background-color: #f1f3f4;
+        color: #222222;
+      }
+      input[type=checkbox] {
+        margin: 0;
+        width: 0;
+        margin-right: 32px;
+        height: 24px;
+        line-height: 1;
+      }
+      input[type=checkbox]::after {
+        content: "check_box_outline_blank";
+        font-size: 24px;
+        font-family: "Material Icons";
+        display: inline-block;
+      }
+      input[type=checkbox]:checked::after {
+        content: "check_box";
+      }
+      input[type=checkbox].color-1 {
+        color: #2196f3;
+      }
+      input[type=checkbox].color-2 {
+        color: #673ab7;
+      }
+      input[type=checkbox].color-3 {
+        color: #4caf50;
+      }
+      input[type=checkbox].color-4 {
+        color: #00bcd4;
+      }
+      input[type=checkbox].color-5 {
+        color: #ffc107;
+      }
+      
+      .topbar {
+        /* Named grid areas can be referenced by name alone! */
+        grid-area: topbar;
+        display: flex;
+        align-items: center;
+        padding: 0 24px;
+        border-bottom: 1px solid #dadce0;
+      }
+      .topbar .brand {
+        flex-basis: 256px;
+        display: flex;
+        align-items: center;
+        font-size: 130%;
+        white-space: nowrap;
+      }
+      .topbar .brand button {
+        margin-right: 0.5em;
+      }
+      .topbar .date-nav {
+        margin-right: 1em;
+        display: flex;
+        align-items: center
+      }
+      .topbar .date-nav #today-button {
+        margin-right: 1em;
+      }
+      .topbar .month {
+        font-size: 130%;
+        white-space: nowrap;
+      }
+      .topbar .actions {
+        flex-grow: 1;
+        display: flex;
+        justify-content: flex-end;
+      }
+      .topbar .actions > * {
+        margin-left: 0.33em;
+      }
+      
+      .sidebar {
+        grid-area: sidebar;
+        overflow-y: auto;
+      }
+      .sidebar > * {
+        padding-bottom: 16px;
+      }
+      .sidebar > *:first-child {
+        padding-top: 16px;
+      }
+      .sidebar > .month-view {
+        padding-left: 14px;
+        padding-right: 19px;
+      }
+      .sidebar > .month-view > .title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 500;
+      }
+      .sidebar > .month-view > .title > .nav {
+        display: flex;
+      }
+      .sidebar > .month-view > .title > .nav > button {
+        margin-left: 3px;
+      }
+      .sidebar > .month-view > .month-view-table {
+        display: flex;
+        flex-direction: column;
+        margin-top: 4px;
+      }
+      .sidebar > .month-view > .month-view-table > .weekdays {
+        display: flex;
+        flex-basis: 24px;
+        align-items: center;
+      }
+      .sidebar > .month-view > .month-view-table > .weekdays > .weekday {
+        flex: 1;
+        font-size: 12px;
+        font-weight: 500;
+        color: #70757a;
+        text-align: center;
+      }
+      .sidebar > .month-view > .month-view-table > .dates {
+        display: grid;
+        justify-items: center;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-rows: 24px;
+      }
+      .sidebar > .month-view > .month-view-table > .dates > .date {
+        flex: 1;
+        font-size: 12px;
+        font-weight: 500;
+        color: #70757a;
+        text-align: center;
+        width: 24px;
+        min-width: unset;
+        height: 24px;
+        padding: 0;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+      .sidebar > .month-view > .month-view-table > .dates > .date.this-month {
+        color: #3c4043;
+      }
+      .sidebar > .month-view > .month-view-table > .dates > .date.today {
+        background-color: #1a73e8;
+        color: white;
+      }
+      .sidebar > .month-view > .month-view-table > .dates > .date.today:hover {
+        background-color: #1967d2;
+      }
+      .sidebar > .calendars > .search-form {
+        padding-left: 14px;
+        padding-right: 19px;
+      }
+      .sidebar > .calendars > .search-form > input {
+        width: 100%;
+      }
+      .sidebar > .calendars .list-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 500;
+        margin-top: 24px;
+        margin-bottom: 4px;
+        padding-left: 14px;
+        padding-right: 19px;
+        cursor: pointer;
+      }
+      .sidebar > .calendars .calendar-list-item {
+        display: flex;
+        align-items: center;
+        height: 28px;
+        padding: 0 19px 0 14px;
+        cursor: pointer;
+      }
+      .sidebar > .calendars .list-header:hover,
+      .sidebar > .calendars .calendar-list-item:hover {
+        background-color: #f6f6f6;
+      }
+      .sidebar > .calendars .list-header:active,
+      .sidebar > .calendars .calendar-list-item:active {
+        background-color: #d8d8d8;
+      }
+      .sidebar > .calendars .calendar-list-item .calendar-actions {
+        display: none;
+      }
+      .sidebar > .calendars .calendar-list-item:hover .calendar-actions {
+        display: flex;
+        justify-content: flex-end;
+        flex: 1;
+      }
+      
+      main {
+        grid-area: main;
+        overflow-y: scroll;
+        max-height: 100%;
+        position: relative;
+      }
+      main > .sticky-header {
+        position: sticky;
+        top: 0;
+        background-color: white;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 65px 1fr;  /* fr = remaining free space */
+        grid-template-rows: 84px 20px;
+        grid-template-areas:
+          ". days"
+          "timezone all-day-events"
+      }
+      main > .sticky-header > .day-column-headings {
+        grid-area: days;
+        display: flex;
+        padding-left: 9px;
+      }
+      main > .sticky-header > .day-column-headings > .day-column-heading {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+      }
+      main > .sticky-header > .day-column-headings > .day-column-heading > .weekday {
+        font-size: 12px;
+        font-weight: 500;
+        color: #70757a;
+        letter-spacing: .8px;
+        text-transform: uppercase;
+      }
+      main > .sticky-header > .day-column-headings > .day-column-heading > .date {
+        font-size: 25px;
+        border-radius: 50%;
+        width: 46px;
+        height: 46px;
+        padding: 0;
+        color: #3c4043;
+        letter-spacing: -1px;
+      }
+      main > .sticky-header > .day-column-headings > .day-column-heading.today > .weekday {
+        color: #1a73e8;
+      }
+      main > .sticky-header > .day-column-headings > .day-column-heading.today > .date {
+        background-color: #1a73e8;
+        color: white;
+      }
+      main > .sticky-header > .day-column-headings > .day-column-heading.today > .date:hover {
+        background-color: #1967d2;
+      }
+      main > .sticky-header > .timezone {
+        grid-area: timezone;
+        font-size: 11px;
+        text-align: right;
+        padding-right: 8px;
+        align-self: center;
+      }
+      main > .sticky-header > .all-day-events {
+        grid-area: all-day-events;
+        display: flex;
+        border-bottom: 1px solid #dadce0;
+        padding-left: 9px;
+      }
+      main > .sticky-header > .all-day-events > .all-day-event-cell {
+        flex: 1;
+        border-left: 1px solid #dadce0;
+        position: relative;
+      }
+      main > .sticky-header > .all-day-events > .all-day-event-cell > .all-day-event {
+        margin-right: 8px;
+        padding-left: 4px;
+        padding-right: 4px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        border-radius: 4px;
+        height: 18px;
+        font-size: 12px;
+        line-height: 18px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      main > .sticky-header > .all-day-events > .all-day-event-cell > .all-day-event > .icon {
+        font-size: 15px;
+        margin-right: 4px;
+      }
+      main > .sticky-header > .all-day-events > .all-day-event-cell > .all-day-event.color-2 {
+        background-color: #673ab7;
+        color: white;
+      }
+      main > .sticky-header > .all-day-events > .all-day-event-cell > .all-day-event.color-2 > .icon {
+        color: white;
+      }
+      main > .events {
+        display: flex;
+        height: 960px;
+        position: relative;
+      }
+      main > .events > .hour-markers {
+        position: absolute;
+        left: 65px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      main > .events > .hour-markers > .hour-marker {
+        border-bottom: 1px solid #dadce0;
+        flex: 1;
+      }
+      main > .events > .hour-labels {
+        height: 100%;
+        flex-basis: 65px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        padding-right: 8px;
+      }
+      main > .events > .hour-labels > .hour-label {
+        font-size: 11px;
+        flex: 1;
+        position: relative;
+        top: -6px;
+      }
+      main > .events > .space-column {
+        height: 100%;
+        flex-basis: 9px;
+      }
+      main > .events > .day-column {
+        border-left: 1px solid #dadce0;
+        height: 100%;
+        flex: 1;
+        position: relative;
+      }
+      main > .events > .day-column > .event {
+        position: absolute;
+        left: 0;
+        right: 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        padding: 4px;
+        overflow: hidden;
+      }
+      main > .events > .day-column > .event > .title {
+        font-weight: 700;
+      }
+      main > .events > .day-column > .event.color-1 {
+        background-color: #2196f3;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <button class="icon">menu</button>
+        Foogle Calendar
+      </div>
+      <div class="date-nav">
+        <button class="outline" id="today-button">Today</button>
+        <button class="small icon">navigate_before</button>
+        <button class="small icon">navigate_next</button>
+      </div>
+      <div class="month">
+        February 2020
+      </div>
+      <div class="actions">
+        <button class="icon">search</button>
+        <button class="icon">help</button>
+        <button class="icon">settings</button>
+        <select>
+          <option value="day">Day</option>
+          <option selected value="week">Week</option>
+          <option value="month">Month</option>
+          <option value="year">Year</option>
+          <option value="schedule">Schedule</option>
+          <option value="four-days">4 days</option>
+        </select>
+      </div>
+    </header>
+    <aside class="sidebar">
+      <div class="month-view">
+        <div class="title">
+          <div class="month-name">February 2020</div>
+          <div class="nav">
+            <button class="tiny icon">navigate_before</button>
+            <button class="tiny icon">navigate_next</button>
+          </div>
+        </div>
+        <div class="month-view-table">
+          <div class="weekdays">
+            <div class="weekday">S</div>
+            <div class="weekday">M</div>
+            <div class="weekday">T</div>
+            <div class="weekday">W</div>
+            <div class="weekday">T</div>
+            <div class="weekday">F</div>
+            <div class="weekday">S</div>
+          </div>
+          <div class="dates">
+            <button class="date">26</button>
+            <button class="date">27</button>
+            <button class="date">28</button>
+            <button class="date">29</button>
+            <button class="date">30</button>
+            <button class="date">31</button>
+            <button class="date this-month">1</button>
+            <button class="date this-month">2</button>
+            <button class="date this-month">3</button>
+            <button class="date this-month">4</button>
+            <button class="date this-month">5</button>
+            <button class="date this-month">6</button>
+            <button class="date this-month">7</button>
+            <button class="date this-month">8</button>
+            <button class="date this-month">9</button>
+            <button class="date this-month">10</button>
+            <button class="date this-month today">11</button>
+            <button class="date this-month">12</button>
+            <button class="date this-month">13</button>
+            <button class="date this-month">14</button>
+            <button class="date this-month">15</button>
+            <button class="date this-month">16</button>
+            <button class="date this-month">17</button>
+            <button class="date this-month">18</button>
+            <button class="date this-month">19</button>
+            <button class="date this-month">20</button>
+            <button class="date this-month">21</button>
+            <button class="date this-month">22</button>
+            <button class="date this-month">23</button>
+            <button class="date this-month">24</button>
+            <button class="date this-month">25</button>
+            <button class="date this-month">26</button>
+            <button class="date this-month">27</button>
+            <button class="date this-month">28</button>
+            <button class="date this-month">29</button>
+            <button class="date">1</button>
+            <button class="date">2</button>
+            <button class="date">3</button>
+            <button class="date">4</button>
+            <button class="date">5</button>
+            <button class="date">6</button>
+            <button class="date">7</button>
+          </div>
+        </div>
+      </div>
+      <div class="calendars">
+        <div class="search-form">
+          <input type="text" placeholder="Search for people">
+        </div>
+        <div class="calendar-lists">
+          <div class="calendar-list">
+            <div class="list-header">
+              <div class="ellipsis">My calendars</div>
+              <span class="icon">expand_less</span>
+            </div>
+            <label class="calendar-list-item">
+              <input type="checkbox" class="color-1" checked>
+              <div class="ellipsis">Zoe Fisher</div>
+              <div class="calendar-actions">
+                <button class="small icon">more_vert</button>
+              </div>
+            </label>
+            <label class="calendar-list-item">
+              <input type="checkbox" class="color-2" checked>
+              <div class="ellipsis">Birthdays</div>
+              <div class="calendar-actions">
+                <button class="small icon">close</button>
+                <button class="small icon">more_vert</button>
+              </div>
+            </label>
+            <label class="calendar-list-item">
+              <input type="checkbox" class="color-3">
+              <div class="ellipsis">Tasks</div>
+              <div class="calendar-actions">
+                <button class="small icon">more_vert</button>
+              </div>
+            </label>
+          </div>
+          <div class="calendar-list">
+            <div class="list-header">
+              <div class="ellipsis">Other calendars</div>
+              <div class="calendar-actions">
+                <button class="small icon">add</button>
+                <span class="icon">expand_less</span>
+              </div>
+            </div>
+            <label class="calendar-list-item">
+              <input type="checkbox" class="color-4">
+              <div class="ellipsis">Nick Curtis</div>
+              <div class="calendar-actions">
+                <button class="small icon">close</button>
+                <button class="small icon">more_vert</button>
+              </div>
+            </label>
+            <label class="calendar-list-item">
+              <input type="checkbox" class="color-5">
+              <div class="ellipsis">Brigitte Thompson</div>
+              <div class="calendar-actions">
+                <button class="small icon">close</button>
+                <button class="small icon">more_vert</button>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="demo-note">
+        <p>This demonstration attempts to capture the visual style used in Google's Calendar webapp. As in most apps by Google, the visual design here adheres to the principles of Material Design.</p>
+        <p>In most cases, for building Material Design apps, you'll be better off using a pre-made JS+CSS package such as Materialize.css or Material-UI, which will save you a lot of work. Here I have recreated some of the designs in plain CSS for your hacking pleasure. Go ahead and play around!</p>
+        <p>It is worth noting that Material Design is highly opinionated, and you may have difficulties fitting it to your use case. Other design languages, such as Bootstrap or Ant, are more flexible and might fit your needs better.</p>
+      </div>
+    </aside>
+    <main>
+      <div class="sticky-header">
+        <div class="day-column-headings">
+          <div class="day-column-heading">
+            <div class="weekday">Sun</div>
+            <button class="date">9</button>
+          </div>
+          <div class="day-column-heading">
+            <div class="weekday">Mon</div>
+            <button class="date">10</button>
+          </div>
+          <div class="day-column-heading today">
+            <div class="weekday">Tue</div>
+            <button class="date">11</button>
+          </div>
+          <div class="day-column-heading">
+            <div class="weekday">Wed</div>
+            <button class="date">12</button>
+          </div>
+          <div class="day-column-heading">
+            <div class="weekday">Thu</div>
+            <button class="date">13</button>
+          </div>    
+          <div class="day-column-heading">
+            <div class="weekday">Fri</div>
+            <button class="date">14</button>
+          </div>
+          <div class="day-column-heading">
+            <div class="weekday">Sat</div>
+            <button class="date">15</button>
+          </div>
+        </div>
+        <div class="timezone">GMT+02</div>
+        <div class="all-day-events">
+          <div class="all-day-event-cell"></div>
+          <div class="all-day-event-cell"></div>
+          <div class="all-day-event-cell"></div>
+          <div class="all-day-event-cell"></div>
+          <div class="all-day-event-cell"></div>
+          <div class="all-day-event-cell">
+            <div class="all-day-event color-2">
+              <span class="icon">cake</span>
+              <div class="caption">Joel Lerner's birthday</div>
+            </div>
+          </div>
+          <div class="all-day-event-cell"></div>
+        </div>
+      </div>
+      <div class="events">
+        <div class="hour-markers">
+          <div class="hour-marker"></div>
+          <div class="hour-marker"></div>
+          <div class="hour-marker"></div>
+          <div class="hour-marker"></div>
+          <div class="hour-marker"></div>
+          <div class="hour-marker"></div>
+          <div class="hour-marker"></div>
+          <div class="hour-marker"></div>
+          <div class="hour-marker"></div>
+          <div class="hour-marker"></div>
+          <div class="hour-marker"></div>
+          <div class="hour-marker"></div>
+          <div class="hour-marker"></div>
+          <div class="hour-marker"></div>
+          <div class="hour-marker"></div>
+          <div class="hour-marker"></div>
+          <div class="hour-marker"></div>
+          <div class="hour-marker"></div>
+          <div class="hour-marker"></div>
+          <div class="hour-marker"></div>
+          <div class="hour-marker"></div>
+          <div class="hour-marker"></div>
+          <div class="hour-marker"></div>
+          <div class="hour-marker"></div>
+        </div>
+        <div class="hour-labels">
+          <div class="hour-label">&nbsp;</div>
+          <div class="hour-label">1 AM</div>
+          <div class="hour-label">2 AM</div>
+          <div class="hour-label">3 AM</div>
+          <div class="hour-label">4 AM</div>
+          <div class="hour-label">5 AM</div>
+          <div class="hour-label">6 AM</div>
+          <div class="hour-label">7 AM</div>
+          <div class="hour-label">8 AM</div>
+          <div class="hour-label">9 AM</div>
+          <div class="hour-label">10 AM</div>
+          <div class="hour-label">11 AM</div>
+          <div class="hour-label">12 PM</div>
+          <div class="hour-label">1 PM</div>
+          <div class="hour-label">2 PM</div>
+          <div class="hour-label">3 PM</div>
+          <div class="hour-label">4 PM</div>
+          <div class="hour-label">5 PM</div>
+          <div class="hour-label">6 PM</div>
+          <div class="hour-label">7 PM</div>
+          <div class="hour-label">8 PM</div>
+          <div class="hour-label">9 PM</div>
+          <div class="hour-label">10 PM</div>
+          <div class="hour-label">11 PM</div>
+        </div>
+        <div class="space-column"></div>
+        <div class="day-column"></div>
+        <div class="day-column">
+          <div class="event color-1" style="height: 20px; top: 320px;">
+            <span class="title">Retrieve credit card</span>,
+            8am, Bank
+          </div>
+          <div class="event color-1" style="height: 40px; top: 460px;">
+            <div class="title">Work out</div>
+            11:30am &ndash; 12:30pm, Gym
+          </div>
+          <div class="event color-1" style="height: 40px; top: 500px;">
+            <div class="title">Lunch</div>
+            12:30 &ndash; 1:30pm
+          </div>
+          <div class="event color-1" style="height: 40px; top: 600px;">
+            <div class="title">Customer meeting</div>
+            3 &ndash; 4pm, Mezzanine
+          </div>
+        </div>
+        <div class="day-column">
+          <div class="event color-1" style="height: 40px; top: 400px;">
+            <div class="title">Stabilizing Horizon</div>
+            10 &ndash; 11am
+          </div>
+          <div class="event color-1" style="height: 40px; top: 480px;">
+            <div class="title">Lunch</div>
+            12 &ndash; 1pm
+          </div>
+          <div class="event color-1" style="height: 30px; top: 720px;">
+            <div class="title">Yoga with Ben</div>
+            6 &ndash; 6:45pm, Amphitheatre
+          </div>
+        </div>
+        <div class="day-column">
+          <div class="event color-1" style="height: 40px; top: 460px;">
+            <div class="title">Work out</div>
+            11:30am &ndash; 12:30pm, Gym
+          </div>
+          <div class="event color-1" style="height: 40px; top: 500px;">
+            <div class="title">Lunch</div>
+            12:30 &ndash; 1:30pm
+          </div>
+          <div class="event color-1" style="height: 40px; top: 600px;">
+            <div class="title">Budget review</div>
+            3 &ndash; 4pm, 2nd Floor Meeting Room
+          </div>
+        </div>
+        <div class="day-column">
+          <div class="event color-1" style="height: 40px; top: 480px;">
+            <div class="title">Lunch</div>
+            12 &ndash; 1pm
+          </div>
+          <div class="event color-1" style="height: 100px; top: 780px;">
+            <div class="title">Rehearsal</div>
+            7:30 &ndash; 10pm
+          </div>
+        </div>
+        <div class="day-column">
+          <div class="event color-1" style="height: 40px; top: 460px;">
+            <div class="title">Work out</div>
+            11:30am &ndash; 12:30pm, Gym
+          </div>
+          <div class="event color-1" style="height: 40px; top: 500px;">
+            <div class="title">Lunch</div>
+            12:30 &ndash; 1:30pm
+          </div>
+          <div class="event color-1" style="height: 30px; top: 600px;">
+            <div class="title">Weekly summary</div>
+            3 &ndash; 3:45pm, Amphitheatre
+          </div>
+          <div class="event color-1" style="height: 100px; top: 840px;">
+            <div class="title">Birthday date! &lt;3</div>
+            9 &ndash; 11:30pm, Au Vieux Duluth
+          </div>
+        </div>
+        <div class="day-column">
+          <div class="event color-1" style="height: 120px; top: 840px;">
+            <div class="title">Movie Night</div>
+            9pm &ndash; 12am, 135 Town View Rd
+          </div>
+        </div>
+      </div>
+      <button class="floating accent icon">add</button>
+    </main>
+  </body>
+</html>
