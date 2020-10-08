@@ -109,7 +109,7 @@
         }
         const number = parseFloat(valueString);
         const unit = valueString.slice(NONNUMERIC_REGEX.exec(valueString).index);
-        return (number + diff) + unit;
+        return Math.round((number + diff) * 1000) / 1000 + unit;
       }
       
       function getNextBorderStyleValue(currentValue, previous) {
@@ -132,7 +132,7 @@
       }
       
       function isValueChar(char) {
-        return (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z') || (char >= '0' && char <= '9') || char === '-';
+        return (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z') || (char >= '0' && char <= '9') || char === '-' || char === '.';
       }
       
       function wordAt(string, position) {
@@ -154,20 +154,20 @@
         return { start, end, word };
       }
       
-      function getNextWord(oldWord, up) {
-        let nextWord = setValueRelative(oldWord, up ? 1 : -1);
-        if (nextWord) return nextWord;
-        nextWord = getNextBorderStyleValue(oldWord, !up);
-        if (nextWord) return nextWord;
+      function getNextValue(oldWord, up, multiplier) {
+        let nextValue = setValueRelative(oldWord, up ? multiplier : -multiplier);
+        if (nextValue) return nextValue;
+        nextValue = getNextBorderStyleValue(oldWord, !up);
+        if (nextValue) return nextValue;
         return null;
       }
       
-      function applyScroll(element, up) {
+      function applyScroll(element, up, multiplier) {
         const oldValue = element.value;
         const cursorPosition = element.selectionStart;
         const { start, end, word } = wordAt(oldValue, cursorPosition);
         if (word) {
-          const newWord = getNextWord(word, up);
+          const newWord = getNextValue(word, up, multiplier);
           if (newWord) {
             event.target.focus();
             event.target.value = oldValue.slice(0, start) + newWord + oldValue.slice(end);
@@ -177,19 +177,28 @@
         }
       }
       
+      function determineValueChangeMultiplier(event) {
+        if (event.ctrlKey) return 100;
+        if (event.shiftKey) return 10;
+        if (event.altKey) return 0.1;
+        return 1;
+      }
+      
       function handleUpDownKeyPress(event) {
+        const multiplier = determineValueChangeMultiplier(event);
         if (event.keyCode === 38) {
           event.preventDefault();
-          applyScroll(event.target, true);
+          applyScroll(event.target, true, multiplier);
         } else if (event.keyCode === 40) {
           event.preventDefault();
-          applyScroll(event.target, false);
+          applyScroll(event.target, false, multiplier);
         }
       }
       
       function handleMouseWheelScroll(event) {
         event.preventDefault();
-        applyScroll(event.target, event.deltaY < 0);
+        const multiplier = determineValueChangeMultiplier(event);
+        applyScroll(event.target, event.deltaY < 0, multiplier);
       }
       
       document.querySelectorAll('.setting-input').forEach(element => {
