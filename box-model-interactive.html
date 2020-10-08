@@ -201,11 +201,15 @@
         applyScroll(event.target, event.deltaY < 0, multiplier);
       }
       
-      document.querySelectorAll('.setting-input').forEach(element => {
-        setVictimCssByInputValue(element);
+      function addEventListenersOnSettingInput(element) {
         element.addEventListener('input', handleInputChange);
         element.addEventListener('keydown', handleUpDownKeyPress);
         element.addEventListener('mousewheel', handleMouseWheelScroll);
+      }
+      
+      document.querySelectorAll('.setting-input').forEach(element => {
+        setVictimCssByInputValue(element);
+        addEventListenersOnSettingInput(element);
       });
       
       function splitSetting(setting) {
@@ -220,8 +224,7 @@
           newContainer.appendChild(document.createTextNode(`${newSetting}: `))
           const newInput = inputElement.cloneNode()
           newInput.dataset.setting = newSetting;
-          newInput.addEventListener('input', handleInputChange);
-          newInput.addEventListener('mousewheel', handleMouseWheelScroll);
+          addEventListenersOnSettingInput(newInput);
           newContainer.appendChild(newInput);
           settingContainer.insertAdjacentElement('afterend', newContainer);
           setVictimCssByInputValue(newInput);
