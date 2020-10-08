@@ -1,0 +1,234 @@
+<html>
+  <head>
+    <style type="text/css">
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        display: flex;
+        color: antiquewhite;
+        background-color: #212;
+        font-family: "Century Gothic", sans-serif;
+        font-size: large;
+      }
+      section {
+        padding: 2em;
+      }
+      #settings {
+        flex: 1;
+      }
+      .setting {
+        font-family: monospace;
+      }
+      .setting input[type=text] {
+        border: 1px solid transparent;
+        border-radius: 2px;
+        background-color: transparent;
+        font: inherit;
+        color: inherit;
+        width: auto;
+        margin: 0;
+        padding: 1px;
+      }
+      .setting input[type=text]:focus {
+        border: 1px solid gainsboro;
+        outline: none;
+      }
+      #setting-split-checkboxes {
+        padding: 1em;
+        text-align: center;
+      }
+      #preview {
+        flex-basis: 500px;
+        background-color: aliceblue;
+        background-color: #281428;
+      }
+      #container {
+        border: 1px solid gray;
+        background-color: #333;
+      }
+      @media (min-width: 1200px) {
+        #preview {
+          flex-basis: 700px;
+        }
+      }
+      #victim {
+        background-color: #444;
+        font-size: initial;
+      }
+    </style>
+  </head>
+  <body>
+    <section id="settings">
+      <h2>Settings</h2>
+      <div class="setting" data-setting="margin">
+        margin: <input type="text" class="setting-input" spellcheck="false" data-setting="margin" value="4px;" />
+      </div>
+      <div class="setting" data-setting="border">
+        border: <input type="text" class="setting-input" spellcheck="false" data-setting="border" size="30" value="1px solid lightgray;" />
+      </div>
+      <div class="setting" data-setting="padding">
+        padding: <input type="text" class="setting-input" spellcheck="false" data-setting="padding" value="4px;" />
+      </div>
+      <div id="setting-split-checkboxes">
+        Set per side:<br />
+        <input type="checkbox" class="setting-split-checkbox" id="setting-split-margin" data-setting="margin" />
+        <label for="setting-split-margin"><code>margin</code></label>
+        <input type="checkbox" class="setting-split-checkbox" id="setting-split-border" data-setting="border" />
+        <label for="setting-split-border"><code>border</code></label>
+        <input type="checkbox" class="setting-split-checkbox" id="setting-split-padding" data-setting="padding" />
+        <label for="setting-split-padding"><code>padding</code></label>
+      </div>
+    </section>
+    <section id="preview">
+      <h2>Preview</h2>
+      <div id="container">
+        <div id="victim">According to all known laws of aviation, there is no way a bee should be able to fly. Its
+          wings are too small to get its fat little body off the ground. The bee, of course, flies anyway, because bees
+          don't care what humans think is impossible.</div>
+      </div>
+    </section>
+    <script type="text/javascript">
+      const NONNUMERIC_REGEX = /[^\d\.\-]/;
+      const BORDER_STYLE_VALUES = [
+        'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'none', 'hidden'];
+      
+      function setVictimCss(attribute, value) {
+        document.getElementById('victim').style[attribute] = value;
+      }
+      
+      function setVictimCssByInputValue(inputElement) {
+        setVictimCss(inputElement.dataset.setting, inputElement.value.replace(';', ''));
+      }
+      
+      function setValueRelative(valueString, diff) {
+        // does not begin with a number
+        if (valueString.replace('-', '')[0] < '0' || valueString.replace('-', '')[0] > '9') {
+          return null;
+        }
+        const number = parseFloat(valueString);
+        const unit = valueString.slice(NONNUMERIC_REGEX.exec(valueString).index);
+        return (number + diff) + unit;
+      }
+      
+      function getNextBorderStyleValue(currentValue, previous) {
+        const currentIndex = BORDER_STYLE_VALUES.indexOf(currentValue);
+        if (currentIndex === -1) {
+          return null;
+        }
+        const indexDiff = previous ? -1 : 1;
+        if (currentIndex + indexDiff >= BORDER_STYLE_VALUES.length) {
+          return BORDER_STYLE_VALUES[0];
+        }
+        if (currentIndex + indexDiff < 0) {
+          return BORDER_STYLE_VALUES.slice(-1)[0];
+        }
+        return BORDER_STYLE_VALUES[currentIndex + indexDiff];
+      }
+      
+      function handleInputChange(event) {
+        setVictimCssByInputValue(event.target);
+      }
+      
+      function isValueChar(char) {
+        return (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z') || (char >= '0' && char <= '9') || char === '-';
+      }
+      
+      function wordAt(string, position) {
+        let start = 0;
+        let end = string.length;
+        for (let i = position - 1; i >= 0; i--) {
+          if (!isValueChar(string[i])) {
+            start = i + 1;
+            break;
+          }
+        }
+        for (let i = position; i < string.length; i++) {
+          if (!isValueChar(string[i])) {
+            end = i;
+            break;
+          }
+        }
+        const word = string.slice(start, end);
+        return { start, end, word };
+      }
+      
+      function getNextWord(oldWord, up) {
+        let nextWord = setValueRelative(oldWord, up ? 1 : -1);
+        if (nextWord) return nextWord;
+        nextWord = getNextBorderStyleValue(oldWord, !up);
+        if (nextWord) return nextWord;
+        return null;
+      }
+      
+      function handleMouseWheelScroll(event) {
+        const up = event.deltaY < 0;
+        const oldValue = event.target.value;
+        const cursorPosition = event.target.selectionStart;
+        const { start, end, word } = wordAt(oldValue, cursorPosition);
+        if (word) {
+          const newWord = getNextWord(word, up);
+          if (newWord) {
+            event.target.focus();
+            event.target.value = oldValue.slice(0, start) + newWord + oldValue.slice(end);
+            setVictimCssByInputValue(event.target);
+            event.target.setSelectionRange(start, start + newWord.length);
+          }
+        }
+      }
+      
+      document.querySelectorAll('.setting-input').forEach(element => {
+        setVictimCssByInputValue(element);
+        element.addEventListener('input', handleInputChange);
+        element.addEventListener('mousewheel', handleMouseWheelScroll);
+      });
+      
+      function splitSetting(setting) {
+        const settingContainer = document.querySelector(`.setting[data-setting=${setting}]`);
+        if (!settingContainer) return;
+        const inputElement = settingContainer.querySelector('input');
+        const value = inputElement.value;
+        for (const side of ['bottom', 'right', 'top', 'left']) {
+          const newContainer = settingContainer.cloneNode();
+          const newSetting = `${setting}-${side}`
+          newContainer.dataset.setting = newSetting;
+          newContainer.appendChild(document.createTextNode(`${newSetting}: `))
+          const newInput = inputElement.cloneNode()
+          newInput.dataset.setting = newSetting;
+          newInput.addEventListener('input', handleInputChange);
+          newInput.addEventListener('mousewheel', handleMouseWheelScroll);
+          newContainer.appendChild(newInput);
+          settingContainer.insertAdjacentElement('afterend', newContainer);
+          setVictimCssByInputValue(newInput);
+        }
+        settingContainer.remove();
+      }
+      
+      function combineSetting(setting) {
+        const settingContainer = document.querySelector(`.setting[data-setting=${setting}-left]`);
+        if (!settingContainer) return;
+        const inputElement = settingContainer.querySelector('input');
+        settingContainer.dataset.setting = setting;
+        inputElement.dataset.setting = setting;
+        settingContainer.firstChild.nodeValue = `${setting}: `;
+        for (const side of ['top', 'right', 'bottom']) {
+          document.querySelector(`.setting[data-setting=${setting}-${side}]`).remove();
+        }
+        setVictimCssByInputValue(inputElement);
+      }
+      
+      function handleSplitModeChanged(event) {
+        if (event.target.checked) {
+          splitSetting(event.target.dataset.setting);
+        } else {
+          combineSetting(event.target.dataset.setting);
+        }
+      }
+      
+      document.querySelectorAll('.setting-split-checkbox').forEach(element => {
+        element.addEventListener('change', handleSplitModeChanged);
+      });
+    </script>
+  </body>
+</html>
