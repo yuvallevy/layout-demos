@@ -251,6 +251,7 @@
       }
       
       document.querySelectorAll('.setting-split-checkbox').forEach(element => {
+        element.checked = false;
         element.addEventListener('change', handleSplitModeChanged);
       });
     </script>
